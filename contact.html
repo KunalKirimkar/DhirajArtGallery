@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,6 +27,7 @@
             overflow-x: hidden;
         }
 
+        /* Navigation Bar */
         nav {
             background-color: var(--bg-card);
             padding: 15px 5%;
@@ -37,19 +39,52 @@
             top: 0;
             z-index: 1000;
         }
-        
-        .nav-links { display: flex; gap: 25px; }
-        .nav-links a {
-            color: var(--text-light); text-decoration: none; font-size: 16px;
-            font-weight: 500; display: flex; align-items: center; gap: 8px; transition: 0.3s;
-        }
-        .nav-links a:hover, .nav-links a.active { color: var(--accent); }
-        .admin-btn {
-            background-color: var(--accent); color: #fff; padding: 10px 20px;
-            text-decoration: none; border-radius: 25px; font-weight: bold; transition: 0.3s;
-        }
-        .admin-btn:hover { background-color: var(--accent-hover); transform: scale(1.05); }
 
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--accent);
+        }
+
+        .admin-btn {
+            background-color: var(--accent);
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .admin-btn:hover {
+            background-color: var(--accent-hover);
+            transform: scale(1.05);
+        }
+
+        /* Base style for the hamburger menu (Hidden on Desktop) */
+        .mobile-menu-btn {
+            display: none;
+            color: var(--text-light);
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+
+        /* Contact Page Layout */
         .contact-container {
             max-width: 1200px;
             margin: 60px auto;
@@ -59,11 +94,12 @@
             flex-wrap: wrap;
         }
 
-        .contact-form-section, .contact-info-section {
+        .contact-form-section,
+        .contact-info-section {
             background-color: var(--bg-card);
             padding: 40px;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             flex: 1;
             min-width: 300px;
         }
@@ -79,7 +115,8 @@
             margin-bottom: 20px;
         }
 
-        .form-group input, .form-group textarea {
+        .form-group input,
+        .form-group textarea {
             width: 100%;
             padding: 15px;
             background-color: #2a2a2a;
@@ -91,7 +128,8 @@
             transition: border-color 0.3s;
         }
 
-        .form-group input:focus, .form-group textarea:focus {
+        .form-group input:focus,
+        .form-group textarea:focus {
             outline: none;
             border-color: var(--accent);
         }
@@ -192,11 +230,21 @@
             text-align: center;
         }
 
-        .social-link .fa-instagram { color: #E1306C; }
-        .social-link .fa-youtube { color: #FF0000; }
-        .social-link .fa-envelope { color: #4285F4; }
+        .social-link .fa-instagram {
+            color: #E1306C;
+        }
 
-        .social-link:hover { color: var(--accent); }
+        .social-link .fa-youtube {
+            color: #FF0000;
+        }
+
+        .social-link .fa-envelope {
+            color: #4285F4;
+        }
+
+        .social-link:hover {
+            color: var(--accent);
+        }
 
         .social-hint {
             color: var(--text-muted);
@@ -212,33 +260,83 @@
             display: none;
         }
 
+        /* --- UPDATED MOBILE NAV & LAYOUT STYLES --- */
         @media (max-width: 768px) {
-            nav { flex-direction: column; gap: 20px; padding: 20px; }
-            .nav-links { flex-wrap: wrap; justify-content: center; }
-            .contact-container { flex-direction: column; margin: 30px auto; }
-            .artist-header h2 { font-size: 2rem; }
+            /* Mobile Nav Styles */
+            nav {
+                padding: 15px 20px;
+                flex-wrap: wrap; 
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                gap: 15px;
+                margin-top: 20px;
+            }
+
+            .admin-btn {
+                display: none;
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+                box-sizing: border-box;
+            }
+
+            .nav-links a {
+                justify-content: center;
+                padding: 10px;
+                font-size: 1.1rem;
+            }
+
+            .nav-active {
+                display: flex !important;
+            }
+
+            /* Preserved Contact Form Mobile Adjustments */
+            .contact-container {
+                flex-direction: column;
+                margin: 30px auto;
+            }
+
+            .artist-header h2 {
+                font-size: 2rem;
+            }
         }
     </style>
     <script type="text/javascript" src="https://npmcdn.com/parse/dist/parse.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script type="text/javascript">
-        (function() {
+        (function () {
             // Initialize EmailJS with your Public Key
             emailjs.init("FMzfLU6Dju5gwb7Ja");
         })();
     </script>
 </head>
+
 <body>
 
     <nav>
-        <div class="nav-links">
-            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+        <h2 style="margin: 0; font-size: 1.5rem; letter-spacing: 1px;">Dhiraj<span style="color: var(--accent);">.Art</span></h2>
+        
+        <div class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+    
+        <div class="nav-links" id="navLinks">
+            <a href="index.html" style="color: var(--accent);"><i class="fas fa-home"></i> Home</a>
             <a href="gallery.html"><i class="fas fa-images"></i> Gallery</a>
             <a href="shop_art.html"><i class="fas fa-store"></i> Shop Art</a>
-            <a href="contact.html" class="active"><i class="fas fa-envelope"></i> Contact</a>
+            <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
             <a href="developer.html"><i class="fas fa-code"></i> Developer</a>
         </div>
-        <a href="login.html" class="admin-btn"><i class="fas fa-user-shield"></i> Artist Login</a>
+    
+        <a href="login.html" class="admin-btn" id="adminBtn"><i class="fas fa-user-shield"></i> Artist Login</a>
     </nav>
 
     <div class="contact-container">
@@ -286,14 +384,16 @@
                 </div>
 
                 <div class="social-item">
-                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=dhirajlothe7@gmail.com" target="_blank" class="social-link">
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=dhirajlothe7@gmail.com" target="_blank"
+                        class="social-link">
                         <i class="fas fa-envelope"></i> dhirajlothe7@gmail.com
                     </a>
                     <span class="social-hint">Drop me an email for professional inquiries</span>
                 </div>
-                
+
                 <div class="social-item" style="margin-top: 10px;">
-                    <a href="tel:+919545255244" class="social-link" style="color: var(--text-muted); text-decoration: none;">
+                    <a href="tel:+919545255244" class="social-link"
+                        style="color: var(--text-muted); text-decoration: none;">
                         <i class="fas fa-phone-alt" style="color: #00be30;"></i> +91 9545255244
                     </a>
                 </div>
@@ -304,14 +404,14 @@
     <script>
         Parse.initialize("jFovL27CUbqG49G1QwrEHeD5YY82XjLMERhJ5cvh", "tkHay2gYJrluGnkescHDM3W4LVrh6hnVYslaOcYM");
         Parse.serverURL = 'https://parseapi.back4app.com/';
-    
+
         async function submitContactForm() {
             const name = document.getElementById('senderName').value;
             const email = document.getElementById('senderEmail').value;
             const subject = document.getElementById('messageSubject').value;
             const message = document.getElementById('messageBody').value;
             const msgElement = document.getElementById('form-message');
-    
+
             // 1. Validation
             if (!name || !email || !message) {
                 msgElement.style.color = "#e63946";
@@ -319,12 +419,12 @@
                 msgElement.style.display = "block";
                 return;
             }
-    
+
             // Change button text to show it's working
             const submitBtn = document.querySelector('.submit-btn');
             submitBtn.innerText = "Sending...";
             submitBtn.disabled = true;
-    
+
             try {
                 // 2. Save backup to Back4App Database
                 const ContactMessage = Parse.Object.extend("ContactMessage");
@@ -334,7 +434,7 @@
                 contactMsg.set("subject", subject);
                 contactMsg.set("message", message);
                 await contactMsg.save();
-    
+
                 // 3. Send Email via EmailJS
                 const templateParams = {
                     from_name: name,
@@ -342,21 +442,21 @@
                     subject: subject,
                     message: message
                 };
-    
+
                 // Replace with your actual Service ID and Template ID from EmailJS
                 await emailjs.send('service_bdemc2b', 'template_ujyicpl', templateParams);
-    
+
                 // 4. Success UI
                 msgElement.style.color = "#25D366";
                 msgElement.innerText = "Message sent successfully!";
                 msgElement.style.display = "block";
-                
+
                 // Clear the form
                 document.getElementById('senderName').value = '';
                 document.getElementById('senderEmail').value = '';
                 document.getElementById('messageSubject').value = '';
                 document.getElementById('messageBody').value = '';
-    
+
             } catch (error) {
                 msgElement.style.color = "#e63946";
                 msgElement.innerText = "Error: " + (error.message || error.text || "Failed to send message.");
@@ -368,5 +468,14 @@
             }
         }
     </script>
+
+    <script>
+        function toggleMobileMenu() {
+            document.getElementById('navLinks').classList.toggle('nav-active');
+            document.getElementById('adminBtn').classList.toggle('nav-active');
+        }
+    </script>
+
 </body>
+
 </html>

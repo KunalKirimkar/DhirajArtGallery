@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,13 +11,15 @@
             --bg-dark: #121212;
             --bg-card: #1e1e1e;
             --text-light: #f4f4f9;
+            --text-muted: #a0a0a0;
             --accent: #e63946;
             --accent-hover: #d62828;
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0; padding: 0;
+            margin: 0;
+            padding: 0;
             background-color: var(--bg-dark);
             color: var(--text-light);
             overflow-x: hidden;
@@ -24,103 +27,350 @@
 
         /* Navigation */
         nav {
-            background-color: var(--bg-card); padding: 15px 5%; display: flex;
-            justify-content: space-between; align-items: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); position: sticky; top: 0; z-index: 1000;
+            background-color: var(--bg-card);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
-        .nav-links { display: flex; gap: 25px; }
-        .nav-links a { color: var(--text-light); text-decoration: none; font-size: 16px; font-weight: 500; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
-        .nav-links a:hover, .nav-links a.active { color: var(--accent); }
-        .admin-btn { background-color: var(--accent); color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 25px; font-weight: bold; transition: 0.3s; }
-        .admin-btn:hover { background-color: var(--accent-hover); transform: scale(1.05); }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--accent);
+        }
+
+        .admin-btn {
+            background-color: var(--accent);
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .admin-btn:hover {
+            background-color: var(--accent-hover);
+            transform: scale(1.05);
+        }
+
+        /* Base style for the hamburger menu (Hidden on Desktop) */
+        .mobile-menu-btn {
+            display: none;
+            color: var(--text-light);
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
 
         /* Header & Filters */
-        .gallery-header { text-align: center; padding: 40px 20px 20px; }
-        .gallery-header h1 { font-size: 2.5rem; margin-bottom: 20px; }
-        .filters { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; flex-wrap: wrap; }
-        .filter-btn { background-color: transparent; color: var(--text-light); border: 2px solid #333; padding: 8px 25px; border-radius: 30px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        .filter-btn:hover, .filter-btn.active { background-color: var(--accent); border-color: var(--accent); color: #fff; }
+        .gallery-header {
+            text-align: center;
+            padding: 40px 20px 20px;
+        }
+
+        .gallery-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background-color: transparent;
+            color: var(--text-light);
+            border: 2px solid #333;
+            padding: 8px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background-color: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
 
         /* Masonry Grid with Animation */
-        .masonry-grid { column-count: 3; column-gap: 20px; max-width: 1200px; margin: 0 auto; padding: 0 20px 60px; }
-        
-        .masonry-item {
-            break-inside: avoid; margin-bottom: 20px; border-radius: 12px; overflow: hidden;
-            position: relative; background-color: var(--bg-card); box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-            cursor: pointer; opacity: 0; transform: translateY(30px);
-            animation: fadeInUp 0.6s ease forwards;
-        }
-        
-        @keyframes fadeInUp {
-            to { opacity: 1; transform: translateY(0); }
+        .masonry-grid {
+            column-count: 3;
+            column-gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
         }
 
-        .masonry-item img { width: 100%; display: block; object-fit: cover; -webkit-user-drag: none; }
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; }
-        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            background-color: var(--bg-card);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .masonry-item img {
+            width: 100%;
+            display: block;
+            object-fit: cover;
+            -webkit-user-drag: none;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
 
         /* Security Layer & Watermark */
         .protect-layer {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 10; display: flex; align-items: flex-end; justify-content: flex-end;
-            padding: 10px; box-sizing: border-box; background: transparent;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+            padding: 10px;
+            box-sizing: border-box;
+            background: transparent;
         }
+
         .watermark-small {
-            color: rgba(255, 255, 255, 0.6); font-size: 0.85rem; font-weight: bold;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.8); pointer-events: none; letter-spacing: 1px;
-            background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+            pointer-events: none;
+            letter-spacing: 1px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 4px 8px;
+            border-radius: 4px;
         }
 
         /* Fullscreen Lightbox */
         #lightbox {
-            display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%;
-            background-color: rgba(10, 10, 10, 0.95); backdrop-filter: blur(8px);
-            align-items: center; justify-content: center; overflow: hidden;
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
         }
-        
+
         /* Lightbox Image & Transform container */
-        .lightbox-content-wrapper { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
+        .lightbox-content-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
         #lightbox-img {
-            max-width: 90vw; max-height: 90vh; object-fit: contain;
-            transition: transform 0.2s ease-out; -webkit-user-drag: none; transform-origin: center;
+            max-width: 90vw;
+            max-height: 90vh;
+            object-fit: contain;
+            transition: transform 0.2s ease-out;
+            -webkit-user-drag: none;
+            transform-origin: center;
         }
 
         /* Lightbox UI Controls */
-        .lightbox-close { position: absolute; top: 20px; right: 30px; color: #fff; font-size: 40px; font-weight: bold; cursor: pointer; z-index: 2005; transition: 0.3s; }
-        .lightbox-close:hover { color: var(--accent); }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2005;
+            transition: 0.3s;
+        }
+
+        .lightbox-close:hover {
+            color: var(--accent);
+        }
 
         /* Edge Zoom Buttons */
         .zoom-edge-btn {
-            position: absolute; top: 50%; transform: translateY(-50%);
-            background: rgba(0,0,0,0.5); border: 2px solid rgba(255,255,255,0.2);
-            color: #fff; width: 60px; height: 60px; border-radius: 50%; font-size: 24px;
-            cursor: pointer; z-index: 2005; display: flex; align-items: center; justify-content: center;
-            transition: 0.3s; backdrop-filter: blur(4px);
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 2005;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            backdrop-filter: blur(4px);
         }
-        .zoom-edge-btn:hover { background: var(--accent); border-color: var(--accent); scale: 1.1; }
-        .btn-zoom-out { left: 30px; }
-        .btn-zoom-in { right: 30px; }
+
+        .zoom-edge-btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            scale: 1.1;
+        }
+
+        .btn-zoom-out {
+            left: 30px;
+        }
+
+        .btn-zoom-in {
+            right: 30px;
+        }
 
         /* Loading Indicator */
-        #loading-spinner { text-align: center; font-size: 2rem; color: var(--accent); margin: 50px 0; }
+        #loading-spinner {
+            text-align: center;
+            font-size: 2rem;
+            color: var(--accent);
+            margin: 50px 0;
+        }
 
-        @media (max-width: 900px) { .masonry-grid { column-count: 2; } }
-        @media (max-width: 600px) { .masonry-grid { column-count: 1; } }
-        .hide { display: none !important; }
+        /* --- RESPONSIVENESS STYLES --- */
+        @media (max-width: 900px) {
+            .masonry-grid {
+                column-count: 2;
+            }
+        }
+
+        @media (max-width: 768px) {
+            /* Mobile Nav Styles */
+            nav {
+                padding: 15px 20px;
+                flex-wrap: wrap; 
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                gap: 15px;
+                margin-top: 20px;
+            }
+
+            .admin-btn {
+                display: none;
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+                box-sizing: border-box;
+            }
+
+            .nav-links a {
+                justify-content: center;
+                padding: 10px;
+                font-size: 1.1rem;
+            }
+
+            .nav-active {
+                display: flex !important;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .masonry-grid {
+                column-count: 1;
+            }
+        }
+
+        .hide {
+            display: none !important;
+        }
     </style>
     <script type="text/javascript" src="https://npmcdn.com/parse/dist/parse.min.js"></script>
 </head>
+
 <body>
 
     <nav>
-        <div class="nav-links">
-            <a href="index.html"><i class="fas fa-home"></i> Home</a>
-            <a href="gallery.html" class="active"><i class="fas fa-images"></i> Gallery</a>
+        <h2 style="margin: 0; font-size: 1.5rem; letter-spacing: 1px;">Dhiraj<span style="color: var(--accent);">.Art</span></h2>
+        
+        <div class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+    
+        <div class="nav-links" id="navLinks">
+            <a href="index.html" style="color: var(--accent);"><i class="fas fa-home"></i> Home</a>
+            <a href="gallery.html"><i class="fas fa-images"></i> Gallery</a>
             <a href="shop_art.html"><i class="fas fa-store"></i> Shop Art</a>
             <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
             <a href="developer.html"><i class="fas fa-code"></i> Developer</a>
         </div>
-        <a href="login.html" class="admin-btn"><i class="fas fa-user-shield"></i> Artist Login</a>
+    
+        <a href="login.html" class="admin-btn" id="adminBtn"><i class="fas fa-user-shield"></i> Artist Login</a>
     </nav>
 
     <div class="gallery-header">
@@ -133,20 +383,21 @@
     </div>
 
     <div id="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading Masterpieces...</div>
-    
+
     <div class="masonry-grid" id="gallery-grid"></div>
 
     <div id="lightbox">
         <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
-        
+
         <button class="zoom-edge-btn btn-zoom-out" onclick="adjustZoom(-0.2)"><i class="fas fa-minus"></i></button>
         <button class="zoom-edge-btn btn-zoom-in" onclick="adjustZoom(0.2)"><i class="fas fa-plus"></i></button>
 
         <div class="lightbox-content-wrapper" id="lightbox-wrapper">
             <div style="position:absolute; width:100%; height:100%; z-index:2001;" oncontextmenu="return false;"></div>
-            
+
             <img id="lightbox-img" src="" alt="Fullscreen View">
-            <div style="position:absolute; bottom:30px; right:30px; z-index:2002;" class="watermark-small">dhiraj_lothe.art</div>
+            <div style="position:absolute; bottom:30px; right:30px; z-index:2002;" class="watermark-small">
+                dhiraj_lothe.art</div>
         </div>
     </div>
 
@@ -164,11 +415,11 @@
                 const GalleryItem = Parse.Object.extend("GalleryItem");
                 const query = new Parse.Query(GalleryItem);
                 query.descending("createdAt"); // Show newest first
-                
+
                 const results = await query.find();
                 spinner.style.display = 'none';
 
-                if(results.length === 0) {
+                if (results.length === 0) {
                     grid.innerHTML = '<h3 style="text-align:center; color:#888; grid-column: 1 / -1;">No artworks uploaded yet.</h3>';
                     return;
                 }
@@ -176,12 +427,12 @@
                 results.forEach((item, index) => {
                     const title = item.get("title");
                     const type = item.get("type"); // 'photo' or 'video'
-                    
+
                     let itemHTML = '';
                     // Stagger the entrance animation delay based on index
                     const animDelay = `animation-delay: ${index * 0.1}s;`;
 
-                    if(type === 'photo') {
+                    if (type === 'photo') {
                         const imgUrl = item.get("image").url();
                         itemHTML = `
                             <div class="masonry-item photo" style="${animDelay}">
@@ -191,7 +442,7 @@
                                 </div>
                             </div>
                         `;
-                    } else if(type === 'video') {
+                    } else if (type === 'video') {
                         const videoUrl = item.get("videoUrl");
                         itemHTML = `
                             <div class="masonry-item video" style="${animDelay}">
@@ -246,7 +497,7 @@
 
         // --- 4. GLOBAL PROTECTION ---
         document.addEventListener('contextmenu', e => {
-            if(e.target.tagName === 'IMG' || e.target.classList.contains('protect-layer')) e.preventDefault();
+            if (e.target.tagName === 'IMG' || e.target.classList.contains('protect-layer')) e.preventDefault();
         });
 
         // --- 5. LIGHTBOX & ZOOM LOGIC ---
@@ -303,10 +554,19 @@
                 // Calculate scale difference
                 const distChange = currentDist - initialDist;
                 // Sensibility factor
-                adjustZoom(distChange * 0.005); 
+                adjustZoom(distChange * 0.005);
                 initialDist = currentDist; // Reset for smooth continuous zooming
             }
         });
     </script>
+
+    <script>
+        function toggleMobileMenu() {
+            document.getElementById('navLinks').classList.toggle('nav-active');
+            document.getElementById('adminBtn').classList.toggle('nav-active');
+        }
+    </script>
+
 </body>
+
 </html>

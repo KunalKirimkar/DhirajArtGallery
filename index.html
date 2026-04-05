@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -72,6 +73,14 @@
         .admin-btn:hover {
             background-color: var(--accent-hover);
             transform: scale(1.05);
+        }
+
+        /* Base style for the hamburger menu (Hidden on Desktop) */
+        .mobile-menu-btn {
+            display: none;
+            color: var(--text-light);
+            font-size: 1.8rem;
+            cursor: pointer;
         }
 
         /* Portfolio Hero Section */
@@ -234,43 +243,81 @@
             }
         }
 
+        /* --- UPDATED MOBILE NAV STYLES --- */
         @media (max-width: 768px) {
             nav {
-                flex-direction: column;
-                gap: 20px;
-                padding: 20px;
+                padding: 15px 20px;
+                flex-wrap: wrap; /* Allows items to drop down when menu opens */
+            }
+            
+            /* Show the hamburger icon */
+            .mobile-menu-btn {
+                display: block;
             }
 
+            /* Hide the links and login button by default on mobile */
             .nav-links {
-                flex-wrap: wrap;
-                justify-content: center;
+                display: none;
+                width: 100%;
+                flex-direction: column;
                 gap: 15px;
+                margin-top: 20px;
+            }
+
+            .admin-btn {
+                display: none;
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+                box-sizing: border-box;
+            }
+
+            /* Center the text and icons inside the mobile menu */
+            .nav-links a {
+                justify-content: center;
+                padding: 10px;
+                font-size: 1.1rem;
+            }
+
+            /* This class is added by JavaScript when the hamburger is clicked */
+            .nav-active {
+                display: flex !important;
             }
         }
     </style>
 </head>
+
 <body>
 
     <nav>
-        <div class="nav-links">
+        <h2 style="margin: 0; font-size: 1.5rem; letter-spacing: 1px;">Dhiraj<span style="color: var(--accent);">.Art</span></h2>
+        
+        <div class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+    
+        <div class="nav-links" id="navLinks">
             <a href="index.html" style="color: var(--accent);"><i class="fas fa-home"></i> Home</a>
             <a href="gallery.html"><i class="fas fa-images"></i> Gallery</a>
             <a href="shop_art.html"><i class="fas fa-store"></i> Shop Art</a>
             <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
             <a href="developer.html"><i class="fas fa-code"></i> Developer</a>
         </div>
-        <a href="login.html" class="admin-btn"><i class="fas fa-user-shield"></i> Artist Login</a>
+    
+        <a href="login.html" class="admin-btn" id="adminBtn"><i class="fas fa-user-shield"></i> Artist Login</a>
     </nav>
 
     <div class="portfolio-container">
-        
+
         <div class="portfolio-left">
             <div class="portfolio-image">
-                <img src="https://parsefiles.back4app.com/jFovL27CUbqG49G1QwrEHeD5YY82XjLMERhJ5cvh/57a85f7f91dd9711adea8a91c19cc3ee_DhirajCard.jpeg" alt="Artist Profile Picture">
+                <img src="https://parsefiles.back4app.com/jFovL27CUbqG49G1QwrEHeD5YY82XjLMERhJ5cvh/57a85f7f91dd9711adea8a91c19cc3ee_DhirajCard.jpeg"
+                    alt="Artist Profile Picture">
             </div>
-            
+
             <div class="social-section">
-                <p class="social-hint"><i class="fas fa-mouse-pointer"></i> Click below to connect on my social accounts</p>
+                <p class="social-hint"><i class="fas fa-mouse-pointer"></i> Click below to connect on my social accounts
+                </p>
                 <div class="social-links-grid">
                     <a href="https://www.instagram.com/dhiraj_lothe.art/" target="_blank" class="social-link-item">
                         <i class="fab fa-instagram" style="color: #E1306C;"></i> @dhiraj_lothe.art
@@ -286,12 +333,23 @@
             <h3>Creative Artist</h3>
             <h1>Hi, I'm Dhiraj Lothe.</h1>
             <p>
-                Welcome to my creative space. I specialize in transforming visions into reality through vibrant wall paintings, detailed portraits, raw graffiti, and timeless fine arts. Every stroke tells a story, and every canvas is a new journey. Explore my gallery, watch my creative process, or bring a piece of my imagination into your home/site.
+                Welcome to my creative space. I specialize in transforming visions into reality through vibrant wall
+                paintings, detailed portraits, raw graffiti, and timeless fine arts. Every stroke tells a story, and
+                every canvas is a new journey. Explore my gallery, watch my creative process, or bring a piece of my
+                imagination into your home/site.
             </p>
             <a href="gallery.html" class="btn-primary"><i class="fas fa-compass"></i> Explore Gallery</a>
         </div>
 
     </div>
 
+    <script>
+        function toggleMobileMenu() {
+            document.getElementById('navLinks').classList.toggle('nav-active');
+            document.getElementById('adminBtn').classList.toggle('nav-active');
+        }
+    </script>
+
 </body>
+
 </html>

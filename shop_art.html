@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +11,7 @@
             --bg-dark: #121212;
             --bg-card: #1e1e1e;
             --text-light: #f4f4f9;
+            --text-muted: #a0a0a0;
             --accent: #e63946;
             --accent-hover: #d62828;
             --whatsapp: #25D366;
@@ -17,24 +19,71 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0; padding: 0;
+            margin: 0;
+            padding: 0;
             background-color: var(--bg-dark);
             color: var(--text-light);
+            overflow-x: hidden;
         }
 
         /* Navigation */
         nav {
-            background-color: var(--bg-card); padding: 15px 5%; display: flex;
-            justify-content: space-between; align-items: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); position: sticky; top: 0; z-index: 1000;
+            background-color: var(--bg-card);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
-        .nav-links { display: flex; gap: 25px; }
-        .nav-links a { color: var(--text-light); text-decoration: none; font-size: 16px; font-weight: 500; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
-        .nav-links a:hover, .nav-links a.active { color: var(--accent); }
-        .admin-btn { background-color: var(--accent); color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 25px; font-weight: bold; transition: 0.3s; }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--accent);
+        }
+
+        .admin-btn {
+            background-color: var(--accent);
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        /* Base style for the hamburger menu (Hidden on Desktop) */
+        .mobile-menu-btn {
+            display: none;
+            color: var(--text-light);
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
 
         /* Shop Grid */
-        .shop-header { text-align: center; padding: 50px 20px 30px; }
+        .shop-header {
+            text-align: center;
+            padding: 50px 20px 30px;
+        }
+
         .shop-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -48,11 +97,14 @@
             background-color: var(--bg-card);
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
             transition: transform 0.3s ease;
             position: relative;
         }
-        .shop-item:hover { transform: translateY(-10px); }
+
+        .shop-item:hover {
+            transform: translateY(-10px);
+        }
 
         .shop-img-container {
             position: relative;
@@ -61,74 +113,217 @@
             overflow: hidden;
             cursor: pointer;
         }
+
         .shop-img-container img {
-            width: 100%; height: 100%; object-fit: cover;
-            transition: 0.5s; -webkit-user-drag: none;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.5s;
+            -webkit-user-drag: none;
         }
-        .shop-item:hover .shop-img-container img { scale: 1.1; }
+
+        .shop-item:hover .shop-img-container img {
+            scale: 1.1;
+        }
 
         /* Protection Layer */
         .protect-layer {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 5; display: flex; align-items: flex-end; justify-content: flex-end;
-            padding: 15px; box-sizing: border-box;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+            padding: 15px;
+            box-sizing: border-box;
         }
+
         .watermark {
-            color: rgba(255, 255, 255, 0.5); font-size: 0.8rem; font-weight: bold;
-            background: rgba(0,0,0,0.4); padding: 5px 10px; border-radius: 5px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.8rem;
+            font-weight: bold;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 5px 10px;
+            border-radius: 5px;
             pointer-events: none;
         }
 
         /* Product Details */
-        .shop-info { padding: 20px; text-align: center; }
-        .shop-title { font-size: 1.4rem; font-weight: bold; margin-bottom: 5px; }
-        .shop-price { color: var(--accent); font-size: 1.2rem; font-weight: 600; margin-bottom: 15px; }
-        .shop-desc { color: #aaa; font-size: 0.95rem; margin-bottom: 20px; line-height: 1.5; }
+        .shop-info {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .shop-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .shop-price {
+            color: var(--accent);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .shop-desc {
+            color: #aaa;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
 
         .buy-btn {
-            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-            width: 90%; padding: 12px; background-color: var(--whatsapp);
-            color: #fff; text-decoration: none; border-radius: 8px;
-            font-weight: bold; transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 90%;
+            padding: 12px;
+            background-color: var(--whatsapp);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
         }
-        .buy-btn:hover { background-color: #1ebe5c; transform: translateY(-2px); }
+
+        .buy-btn:hover {
+            background-color: #1ebe5c;
+            transform: translateY(-2px);
+        }
 
         /* Lightbox (Consistent with Gallery) */
         #lightbox {
-            display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%;
-            background-color: rgba(10, 10, 10, 0.95); backdrop-filter: blur(10px);
-            align-items: center; justify-content: center;
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            align-items: center;
+            justify-content: center;
         }
-        .lightbox-close { position: absolute; top: 20px; right: 30px; color: #fff; font-size: 40px; cursor: pointer; z-index: 2005; }
-        #lightbox-img { max-width: 85vw; max-height: 85vh; object-fit: contain; transition: 0.3s ease-out; }
-        
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #fff;
+            font-size: 40px;
+            cursor: pointer;
+            z-index: 2005;
+        }
+
+        #lightbox-img {
+            max-width: 85vw;
+            max-height: 85vh;
+            object-fit: contain;
+            transition: 0.3s ease-out;
+        }
+
         .zoom-btn {
-            position: absolute; top: 50%; transform: translateY(-50%);
-            background: rgba(255,255,255,0.1); border: 2px solid #fff; color: #fff;
-            width: 50px; height: 50px; border-radius: 50%; font-size: 20px; cursor: pointer; z-index: 2005;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #fff;
+            color: #fff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 2005;
         }
-        .zoom-in { right: 30px; } .zoom-out { left: 30px; }
 
-        #loading { text-align: center; font-size: 1.5rem; margin-top: 50px; color: var(--accent); }
+        .zoom-in {
+            right: 30px;
+        }
 
+        .zoom-out {
+            left: 30px;
+        }
+
+        #loading {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-top: 50px;
+            color: var(--accent);
+        }
+
+        /* --- UPDATED MOBILE NAV & LAYOUT STYLES --- */
         @media (max-width: 768px) {
-            nav { flex-direction: column; gap: 15px; }
-            .shop-grid { grid-template-columns: 1fr; }
+            /* Mobile Nav Styles */
+            nav {
+                padding: 15px 20px;
+                flex-wrap: wrap; 
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                gap: 15px;
+                margin-top: 20px;
+            }
+
+            .admin-btn {
+                display: none;
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+                box-sizing: border-box;
+            }
+
+            .nav-links a {
+                justify-content: center;
+                padding: 10px;
+                font-size: 1.1rem;
+            }
+
+            .nav-active {
+                display: flex !important;
+            }
+
+            /* Shop Art specific mobile adjustments */
+            .shop-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
     <script type="text/javascript" src="https://npmcdn.com/parse/dist/parse.min.js"></script>
 </head>
+
 <body>
 
     <nav>
-        <div class="nav-links">
-            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+        <h2 style="margin: 0; font-size: 1.5rem; letter-spacing: 1px;">Dhiraj<span style="color: var(--accent);">.Art</span></h2>
+        
+        <div class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+    
+        <div class="nav-links" id="navLinks">
+            <a href="index.html" style="color: var(--accent);"><i class="fas fa-home"></i> Home</a>
             <a href="gallery.html"><i class="fas fa-images"></i> Gallery</a>
-            <a href="shop_art.html" class="active"><i class="fas fa-store"></i> Shop Art</a>
+            <a href="shop_art.html"><i class="fas fa-store"></i> Shop Art</a>
             <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
             <a href="developer.html"><i class="fas fa-code"></i> Developer</a>
         </div>
-        <a href="login.html" class="admin-btn"><i class="fas fa-user-shield"></i> Admin Login</a>
+    
+        <a href="login.html" class="admin-btn" id="adminBtn"><i class="fas fa-user-shield"></i> Artist Login</a>
     </nav>
 
     <div class="shop-header">
@@ -144,7 +339,8 @@
         <button class="zoom-btn zoom-out" onclick="adjustZoom(-0.2)"><i class="fas fa-search-minus"></i></button>
         <button class="zoom-btn zoom-in" onclick="adjustZoom(0.2)"><i class="fas fa-search-plus"></i></button>
         <img id="lightbox-img" src="" alt="Fullscreen">
-        <div style="position:absolute; bottom:20px; right:30px; color:rgba(255,255,255,0.4);" class="watermark">dhiraj_lothe.art</div>
+        <div style="position:absolute; bottom:20px; right:30px; color:rgba(255,255,255,0.4);" class="watermark">
+            dhiraj_lothe.art</div>
     </div>
 
     <script>
@@ -163,7 +359,7 @@
 
                 loading.style.display = 'none';
 
-                if(results.length === 0) {
+                if (results.length === 0) {
                     shopContainer.innerHTML = "<p style='text-align:center; grid-column: 1/-1;'>No items listed for sale currently.</p>";
                     return;
                 }
@@ -230,8 +426,17 @@
 
         // Protection
         document.addEventListener('contextmenu', e => {
-            if(e.target.tagName === 'IMG' || e.target.classList.contains('protect-layer')) e.preventDefault();
+            if (e.target.tagName === 'IMG' || e.target.classList.contains('protect-layer')) e.preventDefault();
         });
     </script>
+
+    <script>
+        function toggleMobileMenu() {
+            document.getElementById('navLinks').classList.toggle('nav-active');
+            document.getElementById('adminBtn').classList.toggle('nav-active');
+        }
+    </script>
+
 </body>
+
 </html>
