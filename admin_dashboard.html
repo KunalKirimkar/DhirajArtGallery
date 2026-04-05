@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Artist Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #121212;
+            --bg-card: #1e1e1e;
+            --text-light: #f4f4f9;
+            --accent: #e63946;
+            --accent-hover: #d62828;
+            --success: #25D366;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+        }
+
+        /* Top Header */
+        header {
+            background-color: var(--bg-card);
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--accent);
+        }
+        .logout-btn {
+            background-color: transparent; border: 2px solid var(--accent);
+            color: var(--accent); padding: 8px 16px; border-radius: 20px;
+            cursor: pointer; font-weight: bold; transition: 0.3s;
+        }
+        .logout-btn:hover { background-color: var(--accent); color: #fff; }
+
+        /* Dashboard Layout */
+        .dashboard-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex; gap: 10px; margin-bottom: 30px; flex-wrap: wrap;
+        }
+        .tab-btn {
+            flex: 1; padding: 15px; background-color: var(--bg-card);
+            color: var(--text-light); border: none; border-radius: 8px;
+            cursor: pointer; font-size: 1.1rem; font-weight: bold; transition: 0.3s;
+            min-width: 200px;
+        }
+        .tab-btn.active { background-color: var(--accent); color: #fff; }
+
+        /* Forms & Sections */
+        .form-section {
+            background-color: var(--bg-card);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+            display: none;
+        }
+        .form-section.active { display: block; }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #ccc; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 12px; background-color: #2a2a2a; border: 1px solid #444;
+            border-radius: 6px; color: #fff; box-sizing: border-box; font-family: inherit;
+        }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--accent); }
+        
+        .submit-btn {
+            width: 100%; padding: 15px; background-color: var(--accent);
+            color: #fff; border: none; border-radius: 6px; font-size: 1.1rem;
+            font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px;
+        }
+        .submit-btn:hover { background-color: var(--accent-hover); }
+
+        .type-switcher { display: flex; gap: 15px; margin-bottom: 20px; }
+        .type-switcher label {
+            background: #2a2a2a; padding: 10px 20px; border-radius: 20px;
+            cursor: pointer; border: 2px solid transparent; transition: 0.3s;
+        }
+        .type-switcher input[type="radio"] { display: none; }
+        .type-switcher input[type="radio"]:checked + label { border-color: var(--accent); color: var(--accent); }
+
+        .status-msg { text-align: center; margin-top: 15px; font-weight: bold; display: none; }
+        .hidden { display: none !important; }
+
+        /* --- Manage Items Styles --- */
+        .manage-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .manage-list {
+            background: #2a2a2a;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .manage-list h4 { margin-top: 0; color: var(--accent); border-bottom: 1px solid #444; padding-bottom: 10px;}
+        
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1e1e1e;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            border-left: 3px solid #555;
+        }
+        .item-info { flex: 1; }
+        .item-title { font-weight: bold; margin-bottom: 3px; }
+        .item-type { font-size: 0.8rem; color: #888; }
+        
+        .delete-btn {
+            background: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .delete-btn:hover {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+            .manage-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+    <script type="text/javascript" src="https://npmcdn.com/parse/dist/parse.min.js"></script>
+</head>
+<body>
+
+    <header>
+        <h2><i class="fas fa-palette"></i> Artist Dashboard</h2>
+        <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </header>
+
+    <div class="dashboard-container">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('gallery')"><i class="fas fa-upload"></i> Upload to Gallery</button>
+            <button class="tab-btn" onclick="switchTab('shop')"><i class="fas fa-tag"></i> Sell Art (Shop)</button>
+            <button class="tab-btn" onclick="switchTab('manage')"><i class="fas fa-trash-alt"></i> Manage Items</button>
+        </div>
+
+        <div id="gallery-form" class="form-section active">
+            <h3>Add to Gallery</h3>
+            <div class="type-switcher">
+                <input type="radio" id="type-photo" name="galleryType" value="photo" checked onchange="toggleGalleryType()">
+                <label for="type-photo"><i class="fas fa-image"></i> Upload Photo</label>
+                
+                <input type="radio" id="type-video" name="galleryType" value="video" onchange="toggleGalleryType()">
+                <label for="type-video"><i class="fab fa-youtube"></i> Add Video Link</label>
+            </div>
+
+            <div class="form-group">
+                <label>Artwork Title</label>
+                <input type="text" id="gal-title" placeholder="e.g., Sunset Canvas" required>
+            </div>
+            <div class="form-group" id="photo-input-group">
+                <label>Select Image File</label>
+                <input type="file" id="gal-image" accept="image/*">
+            </div>
+            <div class="form-group hidden" id="video-input-group">
+                <label>YouTube Video Link</label>
+                <input type="url" id="gal-video" placeholder="e.g., https://www.youtube.com/watch?v=...">
+            </div>
+
+            <button class="submit-btn" onclick="uploadGallery()"><i class="fas fa-cloud-upload-alt"></i> Upload to Gallery</button>
+            <p id="gal-msg" class="status-msg"></p>
+        </div>
+
+        <div id="shop-form" class="form-section">
+            <h3>Add to Shop (For Sale)</h3>
+            <div class="form-group">
+                <label>Artwork Title</label>
+                <input type="text" id="shop-title" placeholder="e.g., Original Abstract Painting" required>
+            </div>
+            <div class="form-group">
+                <label>Upload Artwork Image</label>
+                <input type="file" id="shop-image" accept="image/*" required>
+            </div>
+            <div class="form-group">
+                <label>Price (₹ / $)</label>
+                <input type="text" id="shop-price" placeholder="e.g., ₹5000" required>
+            </div>
+            <div class="form-group">
+                <label>Description / Medium</label>
+                <textarea id="shop-desc" placeholder="e.g., Oil on 24x36 Canvas." rows="3"></textarea>
+            </div>
+
+            <button class="submit-btn" onclick="uploadShop()"><i class="fas fa-tags"></i> Add to Shop</button>
+            <p id="shop-msg" class="status-msg"></p>
+        </div>
+
+        <div id="manage-form" class="form-section">
+            <h3>Manage Uploaded Items</h3>
+            <p style="color: #a0a0a0; margin-bottom: 20px;">Delete old artworks or items that are no longer for sale.</p>
+            
+            <div class="manage-grid">
+                <div class="manage-list">
+                    <h4>Gallery Artworks</h4>
+                    <div id="manage-gallery-list">Loading...</div>
+                </div>
+
+                <div class="manage-list">
+                    <h4>Shop Items</h4>
+                    <div id="manage-shop-list">Loading...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. INITIALIZE BACK4APP ---
+        Parse.initialize("jFovL27CUbqG49G1QwrEHeD5YY82XjLMERhJ5cvh", "tkHay2gYJrluGnkescHDM3W4LVrh6hnVYslaOcYM");
+        Parse.serverURL = 'https://parseapi.back4app.com/';
+
+        // Check Auth
+        if (!Parse.User.current()) { window.location.href = "login.html"; }
+
+        function logout() {
+            Parse.User.logOut().then(() => { window.location.href = "index.html"; });
+        }
+
+        // --- 2. TAB LOGIC ---
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.form-section').forEach(sec => sec.classList.remove('active'));
+            
+            if(tabName === 'gallery') {
+                document.querySelectorAll('.tab-btn')[0].classList.add('active');
+                document.getElementById('gallery-form').classList.add('active');
+            } else if(tabName === 'shop') {
+                document.querySelectorAll('.tab-btn')[1].classList.add('active');
+                document.getElementById('shop-form').classList.add('active');
+            } else if(tabName === 'manage') {
+                document.querySelectorAll('.tab-btn')[2].classList.add('active');
+                document.getElementById('manage-form').classList.add('active');
+                // Fetch the latest items when this tab is opened!
+                fetchItemsForManagement(); 
+            }
+        }
+
+        function toggleGalleryType() {
+            const isPhoto = document.getElementById('type-photo').checked;
+            if(isPhoto) {
+                document.getElementById('photo-input-group').classList.remove('hidden');
+                document.getElementById('video-input-group').classList.add('hidden');
+            } else {
+                document.getElementById('photo-input-group').classList.add('hidden');
+                document.getElementById('video-input-group').classList.remove('hidden');
+            }
+        }
+
+        function formatYouTubeUrl(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            if (match && match[2].length === 11) return 'https://www.youtube.com/embed/' + match[2];
+            return url;
+        }
+
+        function showMessage(elementId, text, isError) {
+            const el = document.getElementById(elementId);
+            el.innerText = text; el.style.color = isError ? "#e63946" : "#25D366";
+            el.style.display = "block"; setTimeout(() => { el.style.display = "none"; }, 4000);
+        }
+
+        // --- 3. UPLOAD FUNCTIONS ---
+        async function uploadGallery() {
+            const title = document.getElementById('gal-title').value;
+            const isPhoto = document.getElementById('type-photo').checked;
+            if(!title) return showMessage('gal-msg', 'Title is required!', true);
+
+            const GalleryItem = Parse.Object.extend("GalleryItem");
+            const item = new GalleryItem();
+            item.set("title", title);
+
+            try {
+                if (isPhoto) {
+                    const fileInput = document.getElementById('gal-image');
+                    if (fileInput.files.length === 0) return showMessage('gal-msg', 'Please select an image.', true);
+                    const file = new Parse.File(fileInput.files[0].name, fileInput.files[0]);
+                    item.set("image", file); item.set("type", "photo");
+                } else {
+                    let videoUrl = document.getElementById('gal-video').value;
+                    if(!videoUrl) return showMessage('gal-msg', 'Please enter a video link.', true);
+                    item.set("videoUrl", formatYouTubeUrl(videoUrl)); item.set("type", "video");
+                }
+
+                document.getElementById('gal-msg').innerText = "Uploading..."; document.getElementById('gal-msg').style.display = "block";
+                await item.save(); showMessage('gal-msg', 'Added to Gallery!', false);
+                document.getElementById('gal-title').value = ''; document.getElementById('gal-image').value = ''; document.getElementById('gal-video').value = '';
+            } catch (error) { showMessage('gal-msg', 'Error: ' + error.message, true); }
+        }
+
+        async function uploadShop() {
+            const title = document.getElementById('shop-title').value;
+            const price = document.getElementById('shop-price').value;
+            const desc = document.getElementById('shop-desc').value;
+            const fileInput = document.getElementById('shop-image');
+
+            if(!title || !price || fileInput.files.length === 0) return showMessage('shop-msg', 'Title, Price, and Image required!', true);
+
+            const ShopItem = Parse.Object.extend("ShopItem"); const item = new ShopItem();
+            try {
+                const file = new Parse.File(fileInput.files[0].name, fileInput.files[0]);
+                item.set("title", title); item.set("price", price); item.set("description", desc); item.set("image", file);
+
+                document.getElementById('shop-msg').innerText = "Uploading..."; document.getElementById('shop-msg').style.display = "block";
+                await item.save(); showMessage('shop-msg', 'Added to Shop!', false);
+                document.getElementById('shop-title').value = ''; document.getElementById('shop-price').value = ''; document.getElementById('shop-desc').value = ''; document.getElementById('shop-image').value = '';
+            } catch (error) { showMessage('shop-msg', 'Error: ' + error.message, true); }
+        }
+
+        // --- 4. MANAGE AND DELETE FUNCTIONS ---
+        async function fetchItemsForManagement() {
+            const galContainer = document.getElementById('manage-gallery-list');
+            const shopContainer = document.getElementById('manage-shop-list');
+            
+            galContainer.innerHTML = 'Fetching...';
+            shopContainer.innerHTML = 'Fetching...';
+
+            try {
+                // Fetch Gallery Items
+                const GalleryItem = Parse.Object.extend("GalleryItem");
+                const queryGal = new Parse.Query(GalleryItem);
+                queryGal.descending("createdAt"); // Newest first
+                const galResults = await queryGal.find();
+
+                galContainer.innerHTML = '';
+                if(galResults.length === 0) galContainer.innerHTML = '<p style="color:#888;">No items in gallery.</p>';
+                
+                galResults.forEach(item => {
+                    const id = item.id;
+                    const title = item.get("title");
+                    const type = item.get("type"); // 'photo' or 'video'
+                    
+                    galContainer.innerHTML += `
+                        <div class="item-row" id="row-${id}">
+                            <div class="item-info">
+                                <div class="item-title">${title}</div>
+                                <div class="item-type">${type.toUpperCase()}</div>
+                            </div>
+                            <button class="delete-btn" onclick="deleteItem('GalleryItem', '${id}')"><i class="fas fa-trash"></i></button>
+                        </div>
+                    `;
+                });
+
+                // Fetch Shop Items
+                const ShopItem = Parse.Object.extend("ShopItem");
+                const queryShop = new Parse.Query(ShopItem);
+                queryShop.descending("createdAt");
+                const shopResults = await queryShop.find();
+
+                shopContainer.innerHTML = '';
+                if(shopResults.length === 0) shopContainer.innerHTML = '<p style="color:#888;">No items in shop.</p>';
+
+                shopResults.forEach(item => {
+                    const id = item.id;
+                    const title = item.get("title");
+                    const price = item.get("price");
+                    
+                    shopContainer.innerHTML += `
+                        <div class="item-row" id="row-${id}">
+                            <div class="item-info">
+                                <div class="item-title">${title}</div>
+                                <div class="item-type">${price}</div>
+                            </div>
+                            <button class="delete-btn" onclick="deleteItem('ShopItem', '${id}')"><i class="fas fa-trash"></i></button>
+                        </div>
+                    `;
+                });
+
+            } catch (error) {
+                console.error("Error fetching items: ", error);
+                galContainer.innerHTML = 'Error loading items.';
+                shopContainer.innerHTML = 'Error loading items.';
+            }
+        }
+
+        // Function to Delete an item
+        async function deleteItem(className, objectId) {
+            // Confirm with the user before deleting permanently
+            if(confirm("Are you sure you want to delete this item? This action cannot be undone.")) {
+                try {
+                    const ParseObject = Parse.Object.extend(className);
+                    const query = new Parse.Query(ParseObject);
+                    const itemToDelete = await query.get(objectId);
+                    
+                    // Delete from Back4App
+                    await itemToDelete.destroy();
+                    
+                    // Remove the HTML element instantly for a smooth experience
+                    document.getElementById(`row-${objectId}`).style.display = 'none';
+                    alert("Item successfully deleted.");
+                    
+                } catch (error) {
+                    alert("Error deleting item: " + error.message);
+                }
+            }
+        }
+
+    </script>
+</body>
+</html>

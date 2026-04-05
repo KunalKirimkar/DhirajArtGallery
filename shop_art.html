@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Art | Dhiraj Lothe</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #121212;
+            --bg-card: #1e1e1e;
+            --text-light: #f4f4f9;
+            --accent: #e63946;
+            --accent-hover: #d62828;
+            --whatsapp: #25D366;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0; padding: 0;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+        }
+
+        /* Navigation */
+        nav {
+            background-color: var(--bg-card); padding: 15px 5%; display: flex;
+            justify-content: space-between; align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); position: sticky; top: 0; z-index: 1000;
+        }
+        .nav-links { display: flex; gap: 25px; }
+        .nav-links a { color: var(--text-light); text-decoration: none; font-size: 16px; font-weight: 500; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+        .admin-btn { background-color: var(--accent); color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 25px; font-weight: bold; transition: 0.3s; }
+
+        /* Shop Grid */
+        .shop-header { text-align: center; padding: 50px 20px 30px; }
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+        }
+
+        .shop-item {
+            background-color: var(--bg-card);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+        .shop-item:hover { transform: translateY(-10px); }
+
+        .shop-img-container {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .shop-img-container img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: 0.5s; -webkit-user-drag: none;
+        }
+        .shop-item:hover .shop-img-container img { scale: 1.1; }
+
+        /* Protection Layer */
+        .protect-layer {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 5; display: flex; align-items: flex-end; justify-content: flex-end;
+            padding: 15px; box-sizing: border-box;
+        }
+        .watermark {
+            color: rgba(255, 255, 255, 0.5); font-size: 0.8rem; font-weight: bold;
+            background: rgba(0,0,0,0.4); padding: 5px 10px; border-radius: 5px;
+            pointer-events: none;
+        }
+
+        /* Product Details */
+        .shop-info { padding: 20px; text-align: center; }
+        .shop-title { font-size: 1.4rem; font-weight: bold; margin-bottom: 5px; }
+        .shop-price { color: var(--accent); font-size: 1.2rem; font-weight: 600; margin-bottom: 15px; }
+        .shop-desc { color: #aaa; font-size: 0.95rem; margin-bottom: 20px; line-height: 1.5; }
+
+        .buy-btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+            width: 90%; padding: 12px; background-color: var(--whatsapp);
+            color: #fff; text-decoration: none; border-radius: 8px;
+            font-weight: bold; transition: 0.3s;
+        }
+        .buy-btn:hover { background-color: #1ebe5c; transform: translateY(-2px); }
+
+        /* Lightbox (Consistent with Gallery) */
+        #lightbox {
+            display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(10, 10, 10, 0.95); backdrop-filter: blur(10px);
+            align-items: center; justify-content: center;
+        }
+        .lightbox-close { position: absolute; top: 20px; right: 30px; color: #fff; font-size: 40px; cursor: pointer; z-index: 2005; }
+        #lightbox-img { max-width: 85vw; max-height: 85vh; object-fit: contain; transition: 0.3s ease-out; }
+        
+        .zoom-btn {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(255,255,255,0.1); border: 2px solid #fff; color: #fff;
+            width: 50px; height: 50px; border-radius: 50%; font-size: 20px; cursor: pointer; z-index: 2005;
+        }
+        .zoom-in { right: 30px; } .zoom-out { left: 30px; }
+
+        #loading { text-align: center; font-size: 1.5rem; margin-top: 50px; color: var(--accent); }
+
+        @media (max-width: 768px) {
+            nav { flex-direction: column; gap: 15px; }
+            .shop-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+    <script type="text/javascript" src="https://npmcdn.com/parse/dist/parse.min.js"></script>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-links">
+            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+            <a href="gallery.html"><i class="fas fa-images"></i> Gallery</a>
+            <a href="shop_art.html" class="active"><i class="fas fa-store"></i> Shop Art</a>
+            <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
+            <a href="developer.html"><i class="fas fa-code"></i> Developer</a>
+        </div>
+        <a href="login.html" class="admin-btn"><i class="fas fa-user-shield"></i> Admin Login</a>
+    </nav>
+
+    <div class="shop-header">
+        <h1>Original Artworks for Sale</h1>
+        <p>Bring a piece of imagination into your space.</p>
+    </div>
+
+    <div id="loading"><i class="fas fa-palette fa-spin"></i> Loading Collections...</div>
+    <div class="shop-grid" id="shop-container"></div>
+
+    <div id="lightbox">
+        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+        <button class="zoom-btn zoom-out" onclick="adjustZoom(-0.2)"><i class="fas fa-search-minus"></i></button>
+        <button class="zoom-btn zoom-in" onclick="adjustZoom(0.2)"><i class="fas fa-search-plus"></i></button>
+        <img id="lightbox-img" src="" alt="Fullscreen">
+        <div style="position:absolute; bottom:20px; right:30px; color:rgba(255,255,255,0.4);" class="watermark">dhiraj_lothe.art</div>
+    </div>
+
+    <script>
+        Parse.initialize("jFovL27CUbqG49G1QwrEHeD5YY82XjLMERhJ5cvh", "tkHay2gYJrluGnkescHDM3W4LVrh6hnVYslaOcYM");
+        Parse.serverURL = 'https://parseapi.back4app.com/';
+
+        const shopContainer = document.getElementById('shop-container');
+        const loading = document.getElementById('loading');
+
+        async function fetchShopItems() {
+            try {
+                const ShopItem = Parse.Object.extend("ShopItem");
+                const query = new Parse.Query(ShopItem);
+                query.descending("createdAt");
+                const results = await query.find();
+
+                loading.style.display = 'none';
+
+                if(results.length === 0) {
+                    shopContainer.innerHTML = "<p style='text-align:center; grid-column: 1/-1;'>No items listed for sale currently.</p>";
+                    return;
+                }
+
+                results.forEach(item => {
+                    const title = item.get("title");
+                    const price = item.get("price");
+                    const desc = item.get("description") || "Unique handcrafted artwork.";
+                    const imgUrl = item.get("image").url();
+
+                    // Composing the WhatsApp message
+                    const whatsappMsg = encodeURIComponent(`Hi Dhiraj, I am interested in purchasing your artwork: "${title}". Please share the payment and delivery details!`);
+                    const whatsappLink = `https://wa.me/919545255244?text=${whatsappMsg}`;
+
+                    shopContainer.innerHTML += `
+                        <div class="shop-item">
+                            <div class="shop-img-container" onclick="openLightbox('${imgUrl}')">
+                                <img src="${imgUrl}" alt="${title}" loading="lazy">
+                                <div class="protect-layer" oncontextmenu="return false;">
+                                    <span class="watermark">dhiraj_lothe.art</span>
+                                </div>
+                            </div>
+                            <div class="shop-info">
+                                <div class="shop-title">${title}</div>
+                                <div class="shop-price">${price}</div>
+                                <div class="shop-desc">${desc}</div>
+                                <a href="${whatsappLink}" target="_blank" class="buy-btn">
+                                    <i class="fab fa-whatsapp"></i> Buy This Art
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                });
+
+            } catch (error) {
+                loading.innerHTML = "Error loading shop. Please check connection.";
+                console.error(error);
+            }
+        }
+
+        fetchShopItems();
+
+        // Lightbox Logic
+        const lb = document.getElementById('lightbox');
+        const lbImg = document.getElementById('lightbox-img');
+        let zoom = 1;
+
+        function openLightbox(url) {
+            lbImg.src = url; zoom = 1;
+            lbImg.style.transform = `scale(${zoom})`;
+            lb.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lb.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function adjustZoom(amt) {
+            zoom = Math.max(0.5, Math.min(zoom + amt, 3));
+            lbImg.style.transform = `scale(${zoom})`;
+        }
+
+        // Protection
+        document.addEventListener('contextmenu', e => {
+            if(e.target.tagName === 'IMG' || e.target.classList.contains('protect-layer')) e.preventDefault();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist Portfolio & Gallery</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #121212;
+            --bg-card: #1e1e1e;
+            --text-light: #f4f4f9;
+            --text-muted: #a0a0a0;
+            --accent: #e63946;
+            --accent-hover: #d62828;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+        }
+
+        /* Navigation Bar */
+        nav {
+            background-color: var(--bg-card);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .admin-btn {
+            background-color: var(--accent);
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .admin-btn:hover {
+            background-color: var(--accent-hover);
+            transform: scale(1.05);
+        }
+
+        /* Portfolio Hero Section */
+        .portfolio-container {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .portfolio-left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .portfolio-image {
+            display: flex;
+            justify-content: center;
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .portfolio-image img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            border: 4px solid #2a2a2a;
+            object-fit: cover;
+        }
+
+        /* Decorative element behind image */
+        .portfolio-image::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            width: 100%;
+            height: 100%;
+            background-color: var(--accent);
+            border-radius: 20px;
+            z-index: -1;
+            opacity: 0.8;
+        }
+
+        /* Social Media Section under Image */
+        .social-section {
+            width: 100%;
+            max-width: 450px;
+            background-color: var(--bg-card);
+            padding: 20px;
+            border-radius: 15px;
+            box-sizing: border-box;
+            border: 1px solid #333;
+            text-align: center;
+        }
+
+        .social-hint {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin: 0 0 15px 0;
+            font-style: italic;
+        }
+
+        .social-links-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .social-link-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 10px;
+            background-color: #2a2a2a;
+            border-radius: 8px;
+        }
+
+        .social-link-item:hover {
+            color: var(--accent);
+            background-color: #333;
+        }
+
+        .social-link-item i {
+            font-size: 1.4rem;
+        }
+
+        .portfolio-details {
+            flex: 1;
+        }
+
+        .portfolio-details h3 {
+            color: var(--accent);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .portfolio-details h1 {
+            font-size: 3.5rem;
+            margin: 0 0 20px 0;
+            line-height: 1.1;
+        }
+
+        .portfolio-details p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .btn-primary {
+            background-color: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border-radius: 30px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.3s;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent);
+            color: #fff;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 900px) {
+            .portfolio-container {
+                flex-direction: column;
+                margin: 50px auto;
+                text-align: center;
+                gap: 40px;
+            }
+
+            .portfolio-image::before {
+                top: 10px;
+                left: 10px;
+            }
+
+            .portfolio-details h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-links">
+            <a href="index.html" style="color: var(--accent);"><i class="fas fa-home"></i> Home</a>
+            <a href="gallery.html"><i class="fas fa-images"></i> Gallery</a>
+            <a href="shop_art.html"><i class="fas fa-store"></i> Shop Art</a>
+            <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
+            <a href="developer.html"><i class="fas fa-code"></i> Developer</a>
+        </div>
+        <a href="login.html" class="admin-btn"><i class="fas fa-user-shield"></i> Artist Login</a>
+    </nav>
+
+    <div class="portfolio-container">
+        
+        <div class="portfolio-left">
+            <div class="portfolio-image">
+                <img src="https://parsefiles.back4app.com/jFovL27CUbqG49G1QwrEHeD5YY82XjLMERhJ5cvh/57a85f7f91dd9711adea8a91c19cc3ee_DhirajCard.jpeg" alt="Artist Profile Picture">
+            </div>
+            
+            <div class="social-section">
+                <p class="social-hint"><i class="fas fa-mouse-pointer"></i> Click below to connect on my social accounts</p>
+                <div class="social-links-grid">
+                    <a href="https://www.instagram.com/dhiraj_lothe.art/" target="_blank" class="social-link-item">
+                        <i class="fab fa-instagram" style="color: #E1306C;"></i> @dhiraj_lothe.art
+                    </a>
+                    <a href="https://www.youtube.com/@dhirajlotheart144" target="_blank" class="social-link-item">
+                        <i class="fab fa-youtube" style="color: #FF0000;"></i> Dhirajlothe Art
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="portfolio-details">
+            <h3>Creative Artist</h3>
+            <h1>Hi, I'm Dhiraj Lothe.</h1>
+            <p>
+                Welcome to my creative space. I specialize in transforming visions into reality through vibrant wall paintings, detailed portraits, raw graffiti, and timeless fine arts. Every stroke tells a story, and every canvas is a new journey. Explore my gallery, watch my creative process, or bring a piece of my imagination into your home/site.
+            </p>
+            <a href="gallery.html" class="btn-primary"><i class="fas fa-compass"></i> Explore Gallery</a>
+        </div>
+
+    </div>
+
+</body>
+</html>

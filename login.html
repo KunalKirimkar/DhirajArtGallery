@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a1a;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-box {
+            background-color: #2a2a2a;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            width: 100%;
+            max-width: 350px;
+            text-align: center;
+        }
+        .login-box input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 4px;
+            background-color: #333;
+            color: #fff;
+            box-sizing: border-box;
+        }
+        .login-box button {
+            width: 100%;
+            padding: 12px;
+            background-color: #e63946;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .login-box button:hover {
+            background-color: #d62828;
+        }
+        #error-msg {
+            color: #e63946;
+            margin-top: 10px;
+            display: none;
+        }
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            color: #888;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .back-link:hover {
+            color: #fff;
+        }
+    </style>
+    <script type="text/javascript" src="https://npmcdn.com/parse/dist/parse.min.js"></script>
+    <!-- <script type="text/javascript" src="https://unpkg.com/parse/dist/parse.min.js"></script> -->
+</head>
+<body>
+
+    <div class="login-box">
+        <h2>Artist Login</h2>
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button onclick="loginAdmin()">Login</button>
+        <p id="error-msg"></p>
+        <a href="index.html" class="back-link">← Back to Home</a>
+    </div>
+
+    <script>
+        // Initialize Back4App
+        Parse.initialize("jFovL27CUbqG49G1QwrEHeD5YY82XjLMERhJ5cvh", "tkHay2gYJrluGnkescHDM3W4LVrh6hnVYslaOcYM");
+        Parse.serverURL = 'https://parseapi.back4app.com/';
+
+        async function loginAdmin() {
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            const errorMsg = document.getElementById('error-msg');
+
+            try {
+                // Attempt to log in via Back4App
+                await Parse.User.logIn(user, pass);
+                alert("Login Successful! Redirecting to Dashboard...");
+                // We will create admin-dashboard.html next
+                window.location.href = "admin_dashboard.html"; 
+            } catch (error) {
+                errorMsg.style.display = "block";
+                errorMsg.innerText = "Error: " + error.message;
+            }
+        }
+    </script>
+
+</body>
+</html>
